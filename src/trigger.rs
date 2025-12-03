@@ -18,9 +18,9 @@ impl Frequencies {
 
     fn get_dur_mins(&self) -> u64 {
         match self {
-            Frequencies::Often => 120,
-            Frequencies::Sometimes => 360,
-            Frequencies::Rarely => 900,
+            Frequencies::Often => 120,      // every  2 hours
+            Frequencies::Sometimes => 540,  // every  9 hours
+            Frequencies::Rarely => 1440,    // every 24 hours
         }
     }
 }
