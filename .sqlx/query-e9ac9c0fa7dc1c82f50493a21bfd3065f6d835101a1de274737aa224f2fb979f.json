@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT last_checked\n            FROM channels\n            WHERE feed_url = $1;",
+  "describe": {
+    "columns": [
+      {
+        "name": "last_checked",
+        "ordinal": 0,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      true
+    ]
+  },
+  "hash": "e9ac9c0fa7dc1c82f50493a21bfd3065f6d835101a1de274737aa224f2fb979f"
+}

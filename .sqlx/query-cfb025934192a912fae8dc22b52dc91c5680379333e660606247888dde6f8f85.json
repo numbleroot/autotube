@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE channels\n            SET last_checked = $1\n            WHERE feed_url = $2;",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "cfb025934192a912fae8dc22b52dc91c5680379333e660606247888dde6f8f85"
+}
