@@ -2,7 +2,7 @@
 
 autotube automatically downloads new videos published by YouTube channels you chose to follow, by periodically checking the channels' RSS feeds for updates and downloading videos published since the last check by handing them off to [`yt-dlp`](https://github.com/yt-dlp/yt-dlp).
 
-:warning: autotube does not handle authentication.
+:warning: **autotube does not handle authentication.**
 Ensure that any HTTP request reaching autotube's network socket is indeed an authorized one, e.g., by ensuring that the socket can only be reached from a trusted network (e.g., a LAN or VPN).
 
 
