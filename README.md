@@ -20,11 +20,30 @@ user@machine $   git clone https://github.com/numbleroot/autotube.git
 user@machine $   cd autotube
 user@machine $   cargo build --release              # drop '--release' for a faster but unoptimized development build
 user@machine $   ./target/release/autotube --help   # or './target/debug/autotube --help' if 'cargo build'
+Download YouTube videos, automatically by following channels and on-demand by submitting URLs.
+
+Usage: autotube [OPTIONS] --video-dir <VIDEO_DIR> --tmp-dir <TMP_DIR>
+
+Options:
+      --listen-ip <LISTEN_IP>
+          The IP address the HTTP listener will bind to [env: LISTEN_IP=] [default: 127.0.0.1]
+      --listen-port <LISTEN_PORT>
+          The port number the HTTP listener will bind to [env: LISTEN_PORT=] [default: 22408]
+      --video-dir <VIDEO_DIR>
+          File system path to the location of the video directory in which videos will be placed after they have been downloaded successfully [env: VIDEO_DIR=]
+      --tmp-dir <TMP_DIR>
+          File system path underneath which autotube will create temporary directories for individual video download attempts [env: TMP_DIR=]
+  -h, --help
+          Print help
+  -V, --version
+          Print version
 ```
 or directly install it via:
 ```bash
 user@machine $   cd autotube
 user@machine $   cargo install --locked --path .
+user@machine $   autotube --version
+autotube 0.1.0
 ```
 
 
