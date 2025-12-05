@@ -2,13 +2,30 @@
 
 autotube automatically downloads new videos published by YouTube channels you chose to follow, by periodically checking the channels' RSS feeds for updates and downloading videos published since the last check by handing them off to [`yt-dlp`](https://github.com/yt-dlp/yt-dlp).
 
-:warning: **autotube does not handle authentication.**
-Ensure that any HTTP request reaching autotube's network socket is indeed an authorized one, e.g., by ensuring that the socket can only be reached from a trusted network (e.g., a LAN or VPN).
+:warning: **autotube does not handle authentication!** :warning:\
+Ensure that each HTTP request reaching autotube's network socket is indeed an authorized one, e.g., by placing autotube behind a personal VPN or only exposing it to your LAN.
 
 
-## Usage
+## Requirements
 
-The easiest way to deploy autotube is via the provided [`Dockerfile`](./Dockerfile).
+As autotube hands off YouTube video URLs to [`yt-dlp`](https://github.com/yt-dlp/yt-dlp) for downloading and remuxing, **ensure that `yt-dlp` and needed dependencies (e.g., `ffmpeg`) are found in your PATH**.
+Please refer to your package manager to install the required packages.
+
+
+## Compilation and Running
+
+Assuming an up-to-date Rust environment, you can compile and run autotube via:
+```bash
+user@machine $   git clone https://github.com/numbleroot/autotube.git
+user@machine $   cd autotube
+user@machine $   cargo build --release              # drop '--release' for a faster but unoptimized development build
+user@machine $   ./target/release/autotube --help   # or './target/debug/autotube --help' if 'cargo build'
+```
+or directly install it via:
+```bash
+user@machine $   cd autotube
+user@machine $   cargo install --locked --path .
+```
 
 
 ## Configuration Options
