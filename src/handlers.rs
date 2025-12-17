@@ -357,7 +357,7 @@ mod tests {
         // Below URL inputs to validate_youtube_url() should all produce an Error
         // result with the associated error message.
         let should_error = [
-            ("", "Unsupported or invalid video URL"),
+            ("", "Empty YouTube video URL"),
             ("abc", "Unsupported or invalid video URL"),
             ("http://vimeo.com", "Unsupported or invalid video URL"),
             ("https://www.google.com", "Unsupported or invalid video URL"),
@@ -387,7 +387,15 @@ mod tests {
             assert!(
                 validate_youtube_url(YouTubeURL::Video, url)
                     .await
-                    .is_err_and(|e| e.to_string() == *exp_err)
+                    .is_err_and(|e| {
+                        let ret_err = e.to_string();
+                        if ret_err == *exp_err {
+                            true
+                        } else {
+                            println!("{url}: Expected '{exp_err}', but got '{ret_err}'");
+                            false
+                        }
+                    })
             );
         }
 

@@ -67,7 +67,7 @@ Currently, two HTTP endpoints are serviced when autotube is running:
 
 You can request a video to be downloaded on-demand by passing its URL in the JSON payload to `POST /downloads/ondemand`:
 ```bash
-curl -X POST ${LISTEN_IP}:${LISTEN_PORT}/downloads/ondemand \
+curl -X POST http://${LISTEN_IP}:${LISTEN_PORT}/downloads/ondemand \
     --header "Content-Type: application/json" \
     --data '{ "url": "https://www.youtube.com/watch?v=<YOUTUBE_VIDEO_ID>" }'
 ```
@@ -81,7 +81,7 @@ Finally, you can decide how many of the most recent videos published by the YouT
 
 You can start following a YouTube channel by supplying the mentioned key-value pairs as the JSON payload in a request to `POST /downloads/ondemand`:
 ```bash
-curl -X POST ${LISTEN_IP}:${LISTEN_PORT}/channels/follow \
+curl -X POST http://${LISTEN_IP}:${LISTEN_PORT}/channels/follow \
     --header "Content-Type: application/json" \
     --data '{ "url": "https://www.youtube.com/@<YOUTUBE_CHANNEL>", "frequency": "sometimes", "download_as_of": 3 }'
 ```
