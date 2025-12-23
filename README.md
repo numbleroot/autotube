@@ -2,8 +2,8 @@
 
 autotube automatically downloads new videos published by YouTube channels you chose to follow, by periodically checking the channels' RSS feeds for updates and downloading videos published since the last check by handing them off to [`yt-dlp`](https://github.com/yt-dlp/yt-dlp).
 
-:warning: **autotube does not handle authentication!** :warning:\
-Ensure that each HTTP request reaching autotube's network socket is indeed an authorized one, e.g., by placing autotube behind a personal VPN or only exposing it to your LAN.
+:warning: **autotube authenticates clients using a plaintext `Bearer` token!** :warning:\
+Ensure that each HTTP request reaching autotube's network socket is transported either over an encrypted channel (e.g., by placing autotube behind a personal VPN) or through an entirely trusted network (e.g., only exposing it to your LAN).
 
 
 ## Requirements
@@ -22,13 +22,15 @@ user@machine $   cargo build --release              # drop '--release' for a fas
 user@machine $   ./target/release/autotube --help   # or './target/debug/autotube --help' if 'cargo build'
 Download YouTube videos, automatically by following channels and on-demand by submitting URLs.
 
-Usage: autotube [OPTIONS] --video-dir <VIDEO_DIR> --tmp-dir <TMP_DIR>
+Usage: autotube [OPTIONS] --bearer-token <BEARER_TOKEN> --video-dir <VIDEO_DIR> --tmp-dir <TMP_DIR>
 
 Options:
       --listen-ip <LISTEN_IP>
           The IP address the HTTP listener will bind to [env: LISTEN_IP=] [default: 127.0.0.1]
       --listen-port <LISTEN_PORT>
           The port number the HTTP listener will bind to [env: LISTEN_PORT=] [default: 22408]
+      --bearer-token <BEARER_TOKEN>
+          Bearer token required to be supplied by clients in the 'Authorization' header in order to be deemed authorized to make any request to the server [env: BEARER_TOKEN=]
       --video-dir <VIDEO_DIR>
           File system path to the location of the video directory in which videos will be placed after they have been downloaded successfully [env: VIDEO_DIR=]
       --tmp-dir <TMP_DIR>
@@ -50,13 +52,14 @@ autotube 0.1.0
 ## Configuration Options
 
 autotube can be configured via the following environment and CLI arguments:
-| Configuration               | ENV variable  | CLI argument    | Possible values                           | Default     |
-| --------------------------- | ------------- | --------------- | ----------------------------------------- | ----------- |
-| Log level                   | `RUST_LOG`    | n/a             | `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR` | `INFO`      |
-| Listen IP address           | `LISTEN_IP`   | `--listen-ip`   | any valid IP address                      | `127.0.0.1` |
-| Listen port number          | `LISTEN_PORT` | `--listen-port` | any valid port number                     | `22408`     |
-| Directory for videos        | `VIDEO_DIR`   | `--video-dir`   | any valid file system path                | *none*      |
-| Temporary working directory | `TMP_DIR`     | `--tmp-dir`     | any valid file system path                | *none*      |
+| Configuration                 | ENV variable   | CLI argument     | Possible values                           | Default     |
+| ----------------------------- | -------------- | ---------------- | ----------------------------------------- | ----------- |
+| Log level                     | `RUST_LOG`     | n/a              | `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR` | `INFO`      |
+| Listen IP address             | `LISTEN_IP`    | `--listen-ip`    | any valid IP address                      | `127.0.0.1` |
+| Listen port number            | `LISTEN_PORT`  | `--listen-port`  | any valid port number                     | `22408`     |
+| Bearer token (authentication) | `BEARER_TOKEN` | `--bearer-token` | any valid string                          | *none*      |
+| Directory for videos          | `VIDEO_DIR`    | `--video-dir`    | any valid file system path                | *none*      |
+| Temporary working directory   | `TMP_DIR`      | `--tmp-dir`      | any valid file system path                | *none*      |
 
 
 ## Available HTTP Endpoints
@@ -67,7 +70,8 @@ Currently, two HTTP endpoints are serviced when autotube is running:
 
 You can request a video to be downloaded on-demand by passing its URL in the JSON payload to `POST /downloads/ondemand`:
 ```bash
-curl -X POST http://${LISTEN_IP}:${LISTEN_PORT}/downloads/ondemand \
+curl http://${LISTEN_IP}:${LISTEN_PORT}/downloads/ondemand \
+    --header "Authorization: Bearer CHANGE_THIS_TO_SOMETHING_RANDOM" \
     --header "Content-Type: application/json" \
     --data '{ "url": "https://www.youtube.com/watch?v=<YOUTUBE_VIDEO_ID>" }'
 ```
@@ -81,7 +85,8 @@ Finally, you can decide how many of the most recent videos published by the YouT
 
 You can start following a YouTube channel by supplying the mentioned key-value pairs as the JSON payload in a request to `POST /downloads/ondemand`:
 ```bash
-curl -X POST http://${LISTEN_IP}:${LISTEN_PORT}/channels/follow \
+curl http://${LISTEN_IP}:${LISTEN_PORT}/channels/follow \
+    --header "Authorization: Bearer CHANGE_THIS_TO_SOMETHING_RANDOM" \
     --header "Content-Type: application/json" \
     --data '{ "url": "https://www.youtube.com/@<YOUTUBE_CHANNEL>", "frequency": "sometimes", "download_as_of": 3 }'
 ```

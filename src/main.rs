@@ -25,6 +25,11 @@ struct Args {
     listen_port: String,
 
     #[arg(long, env)]
+    /// Bearer token required to be present in the 'Authorization' header in
+    /// order for a request to be deemed authorized.
+    bearer_token: String,
+
+    #[arg(long, env)]
     /// File system path to the location of the video directory in which videos
     /// will be placed after they have been downloaded successfully.
     video_dir: String,
@@ -116,6 +121,11 @@ async fn main() -> anyhow::Result<()> {
         .route(
             "/channels/follow",
             axum::routing::post(post_channels_follow),
+        )
+        .layer(
+            tower_http::validate_request::ValidateRequestHeaderLayer::bearer(
+                args.bearer_token.as_str(),
+            ),
         )
         .with_state(handler_state);
 
