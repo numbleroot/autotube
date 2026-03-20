@@ -45,6 +45,9 @@
             cargo-deny
             sqlx-cli
           ];
+          shellHook = ''
+            umask 0077
+          '';
           RUST_BACKTRACE = "full";
           RUST_SRC_PATH = "${rust-nightly}/lib/rustlib/src/rust/library";
         };

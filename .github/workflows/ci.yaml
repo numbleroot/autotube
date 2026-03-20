@@ -20,4 +20,4 @@ jobs:
         - name: Run various checks using cargo deny
           uses: EmbarkStudios/cargo-deny-action@v2
         - name: Run tests
-          run: RUST_BACKTRACE=full cargo test -- --no-capture
+          run: RUST_BACKTRACE=full cargo test -- --test-threads=1 --no-capture
